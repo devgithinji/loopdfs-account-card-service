@@ -1,5 +1,6 @@
 package org.loopdfs.accountcardservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.loopdfs.accountcardservice.dto.CardDto;
 import org.loopdfs.accountcardservice.dto.CardResponseDto;
@@ -22,7 +23,7 @@ public class CardController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public CardResponseDto createCard(@RequestBody CardDto cardDto) {
+    public CardResponseDto createCard(@Valid @RequestBody CardDto cardDto) {
         return cardService.createCard(cardDto);
     }
 
@@ -37,7 +38,7 @@ public class CardController {
         return cardService.getAllCards(page, size);
     }
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/account/{accountId}/cards")
     public List<CardResponseDto> getAccountCards(@PathVariable("accountId") Long accountId) {
         return cardService.getAccountCards(accountId);
     }
