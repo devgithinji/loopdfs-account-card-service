@@ -2,6 +2,7 @@ package org.loopdfs.accountcardservice.service;
 
 import org.loopdfs.accountcardservice.dto.CardDto;
 import org.loopdfs.accountcardservice.dto.CardResponseDto;
+import org.loopdfs.accountcardservice.dto.PaginatedResponse;
 
 import java.util.List;
 
@@ -10,11 +11,11 @@ public interface CardService {
 
     CardResponseDto getCard(Long cardId);
 
-    List<CardResponseDto> getAllCards();
+    PaginatedResponse<CardResponseDto> getAllCards(int page, int size);
 
     List<CardResponseDto> getAccountCards(Long accountId);
 
-    CardResponseDto updateCard(String cardAlias);
+    CardResponseDto updateCard(Long cardId, String cardAlias);
 
     void deleteCard(Long cardId);
 }
