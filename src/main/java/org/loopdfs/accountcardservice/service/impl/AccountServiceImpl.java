@@ -3,7 +3,6 @@ package org.loopdfs.accountcardservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.loopdfs.accountcardservice.dto.AccountResponseDto;
 import org.loopdfs.accountcardservice.dto.PaginatedResponse;
-import org.loopdfs.accountcardservice.exception.APIError;
 import org.loopdfs.accountcardservice.exception.ResourceNotFoundException;
 import org.loopdfs.accountcardservice.mapper.AccountMapper;
 import org.loopdfs.accountcardservice.model.Account;
@@ -40,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
         return accountRepo.findById(accountId)
                 .map(AccountMapper::accountToAccountResponseDto)
-                .orElseThrow(() -> new APIError("No account found with accountId : %d".formatted(accountId)));
+                .orElseThrow(() -> new ResourceNotFoundException("account", "accountId", accountId.toString()));
     }
 
     @Override
