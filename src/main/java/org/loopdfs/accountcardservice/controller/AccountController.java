@@ -1,5 +1,6 @@
 package org.loopdfs.accountcardservice.controller;
 
+import jakarta.validation.constraints.Digits;
 import lombok.RequiredArgsConstructor;
 import org.loopdfs.accountcardservice.dto.AccountResponseDto;
 import org.loopdfs.accountcardservice.dto.PaginatedResponse;
@@ -20,7 +21,7 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public AccountResponseDto createAccount(@RequestParam("clientId") Long clientId) {
+    public AccountResponseDto createAccount(@RequestParam("clientId") @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Must be a numeric value") Long clientId) {
         return accountService.createAccount(clientId);
     }
 
@@ -31,7 +32,7 @@ public class AccountController {
 
     @GetMapping
     public PaginatedResponse<AccountResponseDto> getAccounts(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                             @RequestParam(name = "size",defaultValue = "10") int size) {
+                                                             @RequestParam(name = "size", defaultValue = "10") int size) {
         return accountService.getAllAccounts(page, size);
     }
 

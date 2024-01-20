@@ -13,39 +13,43 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> validationErrors = ex.getBindingResult().getAllErrors().stream()
                 .map(error -> (FieldError) error)
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+                .collect(Collectors.toMap(FieldError::getField, fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse("invalid data")));
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(validationErrors);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(
+    public ResponseEntity<Object> handleResourceNotFoundException(
             ResourceNotFoundException resourceNotFoundException,
             WebRequest webRequest
     ) {
         return handleException(resourceNotFoundException, webRequest, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGeneralException(
-            Exception exception,
-            WebRequest webRequest
-    ) {
-        //you can send this to email for tracking purposes
-        return handleException(exception, webRequest, HttpStatus.INTERNAL_SERVER_ERROR);
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex,
+                                                             Object body,
+                                                             HttpHeaders headers,
+                                                             HttpStatusCode statusCode,
+                                                             WebRequest request) {
+        HttpStatus status = ex instanceof InternalServerError ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.BAD_REQUEST;
+        return handleException(ex, request, status);
     }
 
-
-    private ResponseEntity<ErrorResponseDto> handleException(
+    private ResponseEntity<Object> handleException(
             Exception exception,
             WebRequest webRequest,
             HttpStatus httpStatus
