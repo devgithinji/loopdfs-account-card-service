@@ -7,11 +7,13 @@ import org.loopdfs.accountcardservice.dto.ResponseDto;
 import org.loopdfs.accountcardservice.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
+@Validated
 public class AccountController {
 
     private final AccountService accountService;
@@ -28,8 +30,8 @@ public class AccountController {
     }
 
     @GetMapping
-    public PaginatedResponse<AccountResponseDto> getAccounts(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
+    public PaginatedResponse<AccountResponseDto> getAccounts(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                             @RequestParam(name = "size",defaultValue = "10") int size) {
         return accountService.getAllAccounts(page, size);
     }
 
@@ -40,7 +42,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{accountId}")
-    public ResponseDto deleteAccount(@PathVariable("accountId") Long accountId){
+    public ResponseDto deleteAccount(@PathVariable("accountId") Long accountId) {
         accountService.deleteAccount(accountId);
         return new ResponseDto(HttpStatus.OK.toString(), "account deleted successfully");
     }
