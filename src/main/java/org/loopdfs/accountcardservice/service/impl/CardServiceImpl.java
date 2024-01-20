@@ -27,15 +27,15 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardResponseDto createCard(CardDto cardDto) {
         return accountRepo.findById(cardDto.getAccountId()).map(account -> {
-            Card card = CardMapper.cardDtoToCard(cardDto, new Card());
+            Card card = CardMapper.cardDtoToCard(cardDto);
             card.setAccount(account);
-            return CardMapper.cardToCardResponseDto(cardRepo.save(card), new CardResponseDto());
+            return CardMapper.cardToCardResponseDto(cardRepo.save(card));
         }).orElseThrow(() -> new ResourceNotFoundException("account", "account Id", cardDto.getAccountId().toString()));
     }
 
     @Override
     public CardResponseDto getCard(Long cardId) {
-        return cardRepo.findById(cardId).map(card -> CardMapper.cardToCardResponseDto(card, new CardResponseDto()))
+        return cardRepo.findById(cardId).map(CardMapper::cardToCardResponseDto)
                 .orElseThrow(() -> new ResourceNotFoundException("card", "card Id", cardId.toString()));
     }
 
@@ -45,8 +45,8 @@ public class CardServiceImpl implements CardService {
 
         Page<Card> cardPage = cardRepo.findAll(pageRequest);
 
-        List<CardResponseDto> cardResponseDtos = cardPage.get()
-                .map(card -> CardMapper.cardToCardResponseDto(card, new CardResponseDto()))
+        List<CardResponseDto> cardResponseDtos = cardPage.getContent().stream()
+                .map(CardMapper::cardToCardResponseDto)
                 .collect(Collectors.toList());
 
         return new PaginatedResponse<>(
@@ -65,7 +65,7 @@ public class CardServiceImpl implements CardService {
     public List<CardResponseDto> getAccountCards(Long accountId) {
         return accountRepo.findById(accountId).map(account -> account.getCards()
                         .stream()
-                        .map(card -> CardMapper.cardToCardResponseDto(card, new CardResponseDto()))
+                        .map(CardMapper::cardToCardResponseDto)
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new ResourceNotFoundException("account", "account Id", accountId.toString()));
     }
@@ -74,7 +74,7 @@ public class CardServiceImpl implements CardService {
     public CardResponseDto updateCard(Long cardId, String cardAlias) {
         return cardRepo.findById(cardId).map(card -> {
             card.setCardAlias(cardAlias);
-            return CardMapper.cardToCardResponseDto(cardRepo.save(card), new CardResponseDto());
+            return CardMapper.cardToCardResponseDto(cardRepo.save(card));
         }).orElseThrow(() -> new ResourceNotFoundException("card", "card Id", cardId.toString()));
     }
 

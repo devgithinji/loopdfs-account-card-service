@@ -7,13 +7,15 @@ import org.loopdfs.accountcardservice.model.CardType;
 
 public class CardMapper {
 
-    public static Card cardDtoToCard(CardDto cardDto, Card card) {
+    public static Card cardDtoToCard(CardDto cardDto) {
+        Card card = new Card();
         card.setCardAlias(cardDto.getCardAlias());
         card.setCardType(CardType.valueOf(cardDto.getCardType()));
         return card;
     }
 
-    public static CardResponseDto cardToCardResponseDto(Card card, CardResponseDto cardResponseDto) {
+    public static CardResponseDto cardToCardResponseDto(Card card) {
+        CardResponseDto cardResponseDto = new CardResponseDto();
         cardResponseDto.setId(card.getId());
         cardResponseDto.setCardAlias(card.getCardAlias());
         cardResponseDto.setCardType(card.getCardType().name());

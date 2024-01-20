@@ -24,13 +24,14 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepo accountRepo;
     private final Random random = new Random();
+    private static final String[] bics = {"EB456KE", "SB789TZ", "IM587UG", "NA678MQ"};
 
     @Override
 
     public AccountResponseDto createAccount(Long clientId) {
         Account account = accountRepo.save(new Account(IBANGenerator.getIBAN(), getBIC(), clientId));
 
-        return AccountMapper.accountToAccountResponseDto(account, new AccountResponseDto());
+        return AccountMapper.accountToAccountResponseDto(account);
     }
 
 
@@ -38,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDto getAccount(Long accountId) {
 
         return accountRepo.findById(accountId)
-                .map(account -> AccountMapper.accountToAccountResponseDto(account, new AccountResponseDto()))
+                .map(AccountMapper::accountToAccountResponseDto)
                 .orElseThrow(() -> new APIError("No account found with accountId : %d".formatted(accountId)));
     }
 
@@ -48,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
         Page<Account> accountPage = accountRepo.findAll(pageRequest);
 
         List<AccountResponseDto> accountResponseDtos = accountPage.get()
-                .map(account -> AccountMapper.accountToAccountResponseDto(account, new AccountResponseDto()))
+                .map(AccountMapper::accountToAccountResponseDto)
                 .collect(Collectors.toList());
 
         return new PaginatedResponse<>(
@@ -68,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDto updateAccount(Long accountId, Long clientId) {
         return accountRepo.findById(accountId).map(account -> {
             account.setClientId(clientId);
-            return AccountMapper.accountToAccountResponseDto(accountRepo.save(account), new AccountResponseDto());
+            return AccountMapper.accountToAccountResponseDto(accountRepo.save(account));
         }).orElseThrow(() -> new ResourceNotFoundException("account", "account Id", accountId.toString()));
     }
 
@@ -80,7 +81,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private String getBIC() {
-        String[] bics = {"EB456KE", "SB789TZ", "IM587UG", "NA678MQ"};
         int randoIndex = random.nextInt(bics.length);
         return bics[randoIndex];
     }
