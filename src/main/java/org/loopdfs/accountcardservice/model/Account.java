@@ -30,6 +30,12 @@ public class Account extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "account", orphanRemoval = true)
     private List<Card> cards = new ArrayList<>();
 
+    public Account(String iban, String bicSwift, Long clientId) {
+        this.iban = iban;
+        this.bicSwift = bicSwift;
+        this.clientId = clientId;
+    }
+
     public void addCard(Card card) {
         card.setAccount(this);
         this.cards.add(card);
