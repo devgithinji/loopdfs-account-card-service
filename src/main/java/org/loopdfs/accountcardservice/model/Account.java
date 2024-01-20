@@ -21,7 +21,7 @@ public class Account extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String iban;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String bicSwift;
 
     @Column(nullable = false)
@@ -34,15 +34,5 @@ public class Account extends BaseEntity {
         this.iban = iban;
         this.bicSwift = bicSwift;
         this.clientId = clientId;
-    }
-
-    public void addCard(Card card) {
-        card.setAccount(this);
-        this.cards.add(card);
-    }
-
-    public void removeCard(Card card) {
-        card.setAccount(null);
-        this.cards.remove(card);
     }
 }

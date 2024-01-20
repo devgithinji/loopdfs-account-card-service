@@ -20,7 +20,7 @@ public class CardTypeValidator implements ConstraintValidator<ValidCardType, Str
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         boolean isValid = Optional.ofNullable(value)
-                .map(s -> Arrays.asList(CardType.values()).contains(s.toUpperCase()))
+                .map(s -> Arrays.asList(CardType.values()).contains(CardType.valueOf(s.toUpperCase())))
                 .orElse(false);
 
         if (!isValid) {

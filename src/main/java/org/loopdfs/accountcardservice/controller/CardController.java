@@ -38,7 +38,7 @@ public class CardController {
         return cardService.getAllCards(page, size);
     }
 
-    @GetMapping("/account/{accountId}/cards")
+    @GetMapping("/account/{accountId}")
     public List<CardResponseDto> getAccountCards(@PathVariable("accountId") Long accountId) {
         return cardService.getAccountCards(accountId);
     }
