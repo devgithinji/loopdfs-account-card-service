@@ -1,6 +1,7 @@
 package org.loopdfs.accountcardservice.exception;
 
 import org.loopdfs.accountcardservice.dto.ErrorResponseDto;
+import org.loopdfs.accountcardservice.dto.UnprocessableEntityErrorDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -28,7 +29,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(error -> (FieldError) error)
                 .collect(Collectors.toMap(FieldError::getField, fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse("invalid data")));
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(validationErrors);
+
+        UnprocessableEntityErrorDto entityErrorDto = new UnprocessableEntityErrorDto(
+                request.getDescription(false),
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                validationErrors
+        );
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(entityErrorDto);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

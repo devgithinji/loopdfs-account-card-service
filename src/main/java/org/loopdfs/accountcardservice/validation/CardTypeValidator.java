@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.loopdfs.accountcardservice.model.CardType;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class CardTypeValidator implements ConstraintValidator<ValidCardType, String> {
@@ -19,8 +20,11 @@ public class CardTypeValidator implements ConstraintValidator<ValidCardType, Str
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+
+        List<String> cardTypes = Arrays.stream(CardType.values()).map(Enum::toString).toList();
+
         boolean isValid = Optional.ofNullable(value)
-                .map(s -> Arrays.asList(CardType.values()).contains(CardType.valueOf(s.toUpperCase())))
+                .map(s -> cardTypes.contains(s.toUpperCase()))
                 .orElse(false);
 
         if (!isValid) {
