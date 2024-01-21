@@ -9,7 +9,6 @@ import org.loopdfs.accountcardservice.dto.PaginatedResponse;
 import org.loopdfs.accountcardservice.mapper.AccountMapper;
 import org.loopdfs.accountcardservice.model.Account;
 import org.loopdfs.accountcardservice.service.AccountService;
-import org.loopdfs.accountcardservice.service.impl.AccountServiceImpl;
 import org.loopdfs.accountcardservice.util.BICGenerator;
 import org.loopdfs.accountcardservice.util.IBANGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

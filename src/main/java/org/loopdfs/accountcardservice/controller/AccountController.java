@@ -20,7 +20,7 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public AccountResponseDto createAccount(@RequestParam("clientId")  Long clientId) {
+    public AccountResponseDto createAccount(@RequestParam("clientId") Long clientId) {
         return accountService.createAccount(clientId);
     }
 
@@ -31,7 +31,7 @@ public class AccountController {
 
     @GetMapping
     public PaginatedResponse<AccountResponseDto> getAccounts(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                             @RequestParam(name = "size",defaultValue = "10") int size) {
+                                                             @RequestParam(name = "size", defaultValue = "10") int size) {
         return accountService.getAllAccounts(page, size);
     }
 
