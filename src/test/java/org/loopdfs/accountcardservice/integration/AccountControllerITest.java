@@ -36,7 +36,6 @@ class AccountControllerITest {
     private ObjectMapper objectMapper;
 
     private Account account;
-    private AccountResponseDto accountResponseDto;
 
     private Long clientId = 4567L;
 
@@ -45,12 +44,6 @@ class AccountControllerITest {
         accountRepo.deleteAll();
 
         account = new Account(1L, IBANGenerator.getIBAN(), BICGenerator.getBIC(), clientId);
-
-        accountResponseDto = new AccountResponseDto();
-        accountResponseDto.setAccountId(account.getAccountId());
-        accountResponseDto.setIban(account.getIban());
-        accountResponseDto.setBicSwift(account.getBicSwift());
-        accountResponseDto.setClientId(clientId);
     }
 
     @DisplayName("integration test for creating Account")
