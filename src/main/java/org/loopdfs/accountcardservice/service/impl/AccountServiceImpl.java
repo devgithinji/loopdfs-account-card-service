@@ -8,13 +8,13 @@ import org.loopdfs.accountcardservice.mapper.AccountMapper;
 import org.loopdfs.accountcardservice.model.Account;
 import org.loopdfs.accountcardservice.repository.AccountRepo;
 import org.loopdfs.accountcardservice.service.AccountService;
+import org.loopdfs.accountcardservice.util.BICGenerator;
 import org.loopdfs.accountcardservice.util.IBANGenerator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,13 +22,11 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepo accountRepo;
-    private final Random random = new Random();
-    private static final String[] bics = {"EB456KE", "SB789TZ", "IM587UG", "NA678MQ"};
 
     @Override
 
     public AccountResponseDto createAccount(Long clientId) {
-        Account account = accountRepo.save(new Account(IBANGenerator.getIBAN(), getBIC(), clientId));
+        Account account = accountRepo.save(new Account(IBANGenerator.getIBAN(), BICGenerator.getBIC(), clientId));
 
         return AccountMapper.accountToAccountResponseDto(account);
     }
@@ -77,10 +75,5 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepo.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("account", "account Id", accountId.toString()));
         accountRepo.deleteById(account.getAccountId());
-    }
-
-    private String getBIC() {
-        int randoIndex = random.nextInt(bics.length);
-        return bics[randoIndex];
     }
 }
