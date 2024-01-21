@@ -8,14 +8,15 @@ import org.loopdfs.accountcardservice.mapper.AccountMapper;
 import org.loopdfs.accountcardservice.model.Account;
 import org.loopdfs.accountcardservice.repository.AccountRepo;
 import org.loopdfs.accountcardservice.service.AccountService;
-import org.loopdfs.accountcardservice.util.BICGenerator;
-import org.loopdfs.accountcardservice.util.IBANGenerator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.loopdfs.accountcardservice.util.BICGenerator.getBIC;
+import static org.loopdfs.accountcardservice.util.IBANGenerator.getIBAN;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
 
     public AccountResponseDto createAccount(Long clientId) {
-        Account account = accountRepo.save(new Account(IBANGenerator.getIBAN(), BICGenerator.getBIC(), clientId));
+        Account account = accountRepo.save(new Account(getIBAN(), getBIC(), clientId));
 
         return AccountMapper.accountToAccountResponseDto(account);
     }
