@@ -36,7 +36,10 @@ public class AccountController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",
-                    description = "Account created Successfully"
+                    description = "Account created Successfully",
+                    content = @Content(
+                            schema = @Schema(implementation = AccountResponseDto.class)
+                    )
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -66,7 +69,10 @@ public class AccountController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ok"
+                    description = "Ok",
+                    content = @Content(
+                            schema = @Schema(implementation = AccountResponseDto.class)
+                    )
             ),
             @ApiResponse(
                     responseCode = "400",
