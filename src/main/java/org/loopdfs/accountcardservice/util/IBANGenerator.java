@@ -2,11 +2,15 @@ package org.loopdfs.accountcardservice.util;
 
 import java.util.Random;
 
-public class IBANGenerator {
+public final class IBANGenerator {
     private static final String[] COUNTRY_CODES = {"GB", "DE", "FR", "ES"};
     private static final String[] BANK_CODES = {"NWBK", "COBA", "BNPA", "SABE"};
 
     private static final Random random = new Random();
+
+    private IBANGenerator(){
+
+    }
 
 
     public static String getIBAN() {
