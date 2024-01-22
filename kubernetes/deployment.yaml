@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-card-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-card-service
+  template:
+    metadata:
+      labels:
+        app: account-card-service
+    spec:
+      containers:
+        - name: account-card-service
+          image: densoftdev/account-card-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: postgres-credentials

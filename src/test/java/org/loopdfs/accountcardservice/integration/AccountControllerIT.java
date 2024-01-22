@@ -5,7 +5,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.loopdfs.accountcardservice.dto.AccountResponseDto;
 import org.loopdfs.accountcardservice.model.Account;
 import org.loopdfs.accountcardservice.repository.AccountRepo;
 import org.loopdfs.accountcardservice.util.BICGenerator;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class AccountControllerITest {
+class AccountControllerIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

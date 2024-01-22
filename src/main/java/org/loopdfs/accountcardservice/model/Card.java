@@ -29,6 +29,11 @@ public class Card extends BaseEntity {
     @Column(nullable = false)
     private CardType cardType;
 
+    public Card(String cardAlias, Account account, CardType cardType) {
+        this.cardAlias = cardAlias;
+        this.account = account;
+        this.cardType = cardType;
+    }
 
     @Override
     public boolean equals(Object o) {
